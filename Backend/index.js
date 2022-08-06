@@ -7,7 +7,7 @@ const app = express();
 // DB connection
 
 // Import Routes
-const bootcampRoutes = require("./routes/routes.bootcamps");
+const bootcampRoutes = require("./routes/bootcamp.routes");
 
 // Middlewares
 if (process.env.NODE_ENV === "development") {

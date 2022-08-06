@@ -5,7 +5,7 @@ const {
   createBootcamp,
   updateBootcamp,
   deleteBootcamp,
-} = require("../controllers/controllers.bootcamps");
+} = require("../controllers/bootcamps.controllers");
 
 // router.get("/", getBootcamps);
 // router.get("/:id", getBootcamp);
