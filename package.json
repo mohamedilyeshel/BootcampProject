@@ -1,0 +1,19 @@
+{
+  "name": "bootcampproject",
+  "version": "1.0.0",
+  "description": "Project to create a Bootcamp App (Just Backend)",
+  "main": "index.js",
+  "scripts": {
+    "start" : "set NODE_ENV=production && node Backend/index.js",
+    "dev" : "nodemon Backend/index.js"
+  },
+  "author": "Med Ilyes Helal",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
