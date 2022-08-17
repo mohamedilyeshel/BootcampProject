@@ -7,23 +7,20 @@ const {
   deleteBootcamp,
 } = require("../controllers/bootcamps.controllers");
 const bootcampModel = require("../models/bootcamp.models");
+const errorHandlerClass = require("../utils/errorHandClass.utils");
 
 router.param("bootcamp", async (req, res, next, id) => {
   try {
     const bootcamp = await bootcampModel.findById(id);
+    // This test is used to check if nothing is returned because the id could be sent in a proper format but doesn't exists in the database
     if (!bootcamp) {
-      return res.status(404).json({
-        success: false,
-        error: "Bootcamp Not Found!",
-      });
+      return next(new errorHandlerClass("Bootcamp Not Found", 404));
+      // throw new errorHandlerClass("Bootcamp Not Found", 404);
     }
     req.bootcamp = bootcamp;
     next();
   } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: err,
-    });
+    next(err);
   }
 });
 

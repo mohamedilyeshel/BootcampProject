@@ -3,7 +3,7 @@ const bootcampModel = require("../models/bootcamp.models");
 // @desc Get all bootcamps
 // @route GET /api/v1/bootcamps/
 // @access Public
-module.exports.getBootcamps = async (req, res) => {
+module.exports.getBootcamps = async (req, res, next) => {
   try {
     const bootcamps = await bootcampModel.find();
     return res.status(200).json({
@@ -13,18 +13,14 @@ module.exports.getBootcamps = async (req, res) => {
       data: bootcamps,
     });
   } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: err,
-      data: [],
-    });
+    next(err);
   }
 };
 
 // @desc Get one bootcamp with a specific id
 // @route GET /api/v1/bootcamps/:bootcamp
 // @access Public
-module.exports.getBootcamp = async (req, res) => {
+module.exports.getBootcamp = async (req, res, next) => {
   try {
     const bootcamp = req.bootcamp;
     return res.status(200).json({
@@ -33,18 +29,14 @@ module.exports.getBootcamp = async (req, res) => {
       data: bootcamp,
     });
   } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: err,
-      data: [],
-    });
+    next(err);
   }
 };
 
 // @desc Create a new bootcamp
 // @route POST /api/v1/bootcamps/
 // @access Private
-module.exports.createBootcamp = async (req, res) => {
+module.exports.createBootcamp = async (req, res, next) => {
   try {
     const bootCamp = new bootcampModel({
       name: req.body.name,
@@ -68,18 +60,14 @@ module.exports.createBootcamp = async (req, res) => {
       data: savedBoot,
     });
   } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: err,
-      data: [],
-    });
+    next(err);
   }
 };
 
 // @desc Update a bootcamp
 // @route PUT /api/v1/bootcamps/:bootcamp
 // @access Private
-module.exports.updateBootcamp = async (req, res) => {
+module.exports.updateBootcamp = async (req, res, next) => {
   try {
     const id = req.bootcamp._id;
     const bootcamp = await bootcampModel.findByIdAndUpdate(id, req.body, {
@@ -92,18 +80,14 @@ module.exports.updateBootcamp = async (req, res) => {
       data: bootcamp,
     });
   } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: err,
-      data: [],
-    });
+    next(err);
   }
 };
 
 // @desc Delete a bootcamp
 // @route DELETE /api/v1/bootcamps/:bootcamp
 // @access Private
-module.exports.deleteBootcamp = async (req, res) => {
+module.exports.deleteBootcamp = async (req, res, next) => {
   try {
     const id = req.bootcamp._id;
     const bootcamp = await bootcampModel.findByIdAndDelete(id);
@@ -113,10 +97,6 @@ module.exports.deleteBootcamp = async (req, res) => {
       data: bootcamp,
     });
   } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: err,
-      data: [],
-    });
+    next(err);
   }
 };
