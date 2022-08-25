@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const bootcampSchema = new mongoose.Schema(
   {
@@ -12,7 +13,11 @@ const bootcampSchema = new mongoose.Schema(
         "Bootcamp name is too long, should not pass 50 characters",
       ],
     },
-    slug: String,
+    slug: {
+      type: String,
+      unique: true,
+      maxlength: 512,
+    },
     description: {
       type: String,
       required: [true, "Please add a description"],
@@ -104,5 +109,13 @@ const bootcampSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+bootcampSchema.pre("validate", function (next) {
+  this.slug = slugify(this.name, {
+    strict: true,
+    lower: true,
+  });
+  next();
+});
 
 module.exports = mongoose.model("Bootcamp", bootcampSchema);
