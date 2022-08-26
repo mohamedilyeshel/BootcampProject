@@ -7,7 +7,14 @@ const ErrorHandler = require("../utils/errorHandClass.utils");
 // @access Public
 module.exports.getBootcamps = async (req, res, next) => {
   try {
-    const bootcamps = await bootcampModel.find();
+    let bootcamps;
+
+    if (Object.keys(req.query).length > 0) {
+      bootcamps = await bootcampModel.find(req.query);
+    } else {
+      bootcamps = await bootcampModel.find();
+    }
+
     return res.status(200).json({
       count: bootcamps.length,
       success: true,
@@ -48,6 +55,7 @@ module.exports.createBootcamp = async (req, res, next) => {
       email: req.body.email,
       address: req.body.address,
       careers: req.body.careers,
+      averageCost: req.body.averageCost,
       housing: req.body.housing,
       jobAssistance: req.body.jobAssistance,
       jobGuarantee: req.body.jobGuarantee,
