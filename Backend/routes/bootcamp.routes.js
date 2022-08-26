@@ -5,6 +5,7 @@ const {
   createBootcamp,
   updateBootcamp,
   deleteBootcamp,
+  getBootcampsInRadius,
 } = require("../controllers/bootcamps.controllers");
 const bootcampModel = require("../models/bootcamp.models");
 const errorHandlerClass = require("../utils/errorHandClass.utils");
@@ -30,6 +31,7 @@ router.param("bootcamp", async (req, res, next, id) => {
 // router.put("/:id", updateBootcamp);
 // router.delete("/:id", deleteBootcamp);
 
+router.get("/radius/:country/:zipCode/:distance/:unit", getBootcampsInRadius);
 router.route("/").get(getBootcamps).post(createBootcamp);
 router
   .route("/:bootcamp")
