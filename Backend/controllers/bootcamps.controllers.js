@@ -7,13 +7,21 @@ const ErrorHandler = require("../utils/errorHandClass.utils");
 // @access Public
 module.exports.getBootcamps = async (req, res, next) => {
   try {
-    let bootcamps;
+    const removedFields = ["sort", "select"];
+    let queryFilter = { ...req.query };
+    removedFields.forEach((q) => {
+      delete queryFilter[q];
+    });
 
-    if (Object.keys(req.query).length > 0) {
-      bootcamps = await bootcampModel.find(req.query);
-    } else {
-      bootcamps = await bootcampModel.find();
-    }
+    let querySelect = req.query.select
+      ? req.query.select.split(",").join(" ")
+      : "";
+    let querySort = req.query.sort ? req.query.sort.split(",").join(" ") : "";
+
+    const bootcamps = await bootcampModel
+      .find(queryFilter)
+      .select(querySelect)
+      .sort(querySort);
 
     return res.status(200).json({
       count: bootcamps.length,
