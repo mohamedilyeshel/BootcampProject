@@ -109,6 +109,7 @@ const bootcampSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    strictQuery: true,
   }
 );
 

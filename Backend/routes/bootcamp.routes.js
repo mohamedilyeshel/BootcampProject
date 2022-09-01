@@ -9,6 +9,7 @@ const {
 } = require("../controllers/bootcamps.controllers");
 const bootcampModel = require("../models/bootcamp.models");
 const errorHandlerClass = require("../utils/errorHandClass.utils");
+const optionsMiddleware = require("../middlewares/options.middlewares");
 
 router.param("bootcamp", async (req, res, next, id) => {
   try {
@@ -32,7 +33,10 @@ router.param("bootcamp", async (req, res, next, id) => {
 // router.delete("/:id", deleteBootcamp);
 
 router.get("/radius/:country/:zipCode/:distance/:unit", getBootcampsInRadius);
-router.route("/").get(getBootcamps).post(createBootcamp);
+router
+  .route("/")
+  .get(optionsMiddleware(bootcampModel), getBootcamps)
+  .post(createBootcamp);
 router
   .route("/:bootcamp")
   .get(getBootcamp)
