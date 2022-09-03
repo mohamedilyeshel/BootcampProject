@@ -7,6 +7,7 @@ const {
   deleteBootcamp,
   getBootcampsInRadius,
 } = require("../controllers/bootcamps.controllers");
+const { getBootcampCourses } = require("../controllers/course.controllers");
 const bootcampModel = require("../models/bootcamp.models");
 const errorHandlerClass = require("../utils/errorHandClass.utils");
 const optionsMiddleware = require("../middlewares/options.middlewares");
@@ -33,6 +34,7 @@ router.param("bootcamp", async (req, res, next, id) => {
 // router.delete("/:id", deleteBootcamp);
 
 router.get("/radius/:country/:zipCode/:distance/:unit", getBootcampsInRadius);
+router.get("/:bootcamp/courses", getBootcampCourses);
 router
   .route("/")
   .get(optionsMiddleware(bootcampModel), getBootcamps)

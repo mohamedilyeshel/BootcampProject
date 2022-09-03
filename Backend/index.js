@@ -12,6 +12,7 @@ connectDb();
 
 // Import Routes
 const bootcampRoutes = require("./routes/bootcamp.routes");
+const courseRoutes = require("./routes/course.routes");
 
 // Middlewares
 app.use(express.json());
@@ -22,6 +23,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Routes Middlewares (Mount routers)
 app.use("/api/v1/bootcamps", bootcampRoutes);
+app.use("/api/v1/courses", courseRoutes);
 
 // Error Handler Middleware
 app.use(errorHandlerMiddleware);
