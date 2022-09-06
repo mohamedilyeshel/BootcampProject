@@ -7,7 +7,8 @@ module.exports.getCourses = async (req, res, next) => {
       .select(req.querySelect)
       .sort(req.querySort)
       .skip(req.skip)
-      .limit(req.limit);
+      .limit(req.limit)
+      .populate({ path: "bootcamp" });
 
     return res.status(200).json({
       count: courses.length,

@@ -110,6 +110,8 @@ const bootcampSchema = new mongoose.Schema(
   {
     timestamps: true,
     strictQuery: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
@@ -139,6 +141,12 @@ bootcampSchema.pre("save", async function (next) {
   } catch (err) {
     next(new ErrorHandler("There's a problem with the location/address"));
   }
+});
+
+bootcampSchema.virtual("courses", {
+  ref: "Course",
+  localField: "_id",
+  foreignField: "bootcamp",
 });
 
 module.exports = mongoose.model("Bootcamp", bootcampSchema);
