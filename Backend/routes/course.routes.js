@@ -1,7 +1,6 @@
 const {
   getCourses,
   createCourse,
-  getBootcampCourses,
   getCourse,
   updateCourse,
   deleteCourse,

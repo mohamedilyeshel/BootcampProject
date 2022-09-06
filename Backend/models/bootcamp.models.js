@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const slugify = require("slugify");
 const geocoder = require("../utils/geocoder.utils");
 const ErrorHandler = require("../utils/errorHandClass.utils");
+const courseModel = require("./course.models");
 
 const bootcampSchema = new mongoose.Schema(
   {
@@ -141,6 +142,11 @@ bootcampSchema.pre("save", async function (next) {
   } catch (err) {
     next(new ErrorHandler("There's a problem with the location/address"));
   }
+});
+
+bootcampSchema.pre("findOneAndDelete", async function (next) {
+  await courseModel.deleteMany({ bootcamp: this.getQuery()["_id"] });
+  next();
 });
 
 bootcampSchema.virtual("courses", {
