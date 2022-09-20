@@ -56,7 +56,6 @@ module.exports.createBootcamp = async (req, res, next) => {
       email: req.body.email,
       address: req.body.address,
       careers: req.body.careers,
-      averageCost: req.body.averageCost,
       housing: req.body.housing,
       jobAssistance: req.body.jobAssistance,
       jobGuarantee: req.body.jobGuarantee,

@@ -94,8 +94,9 @@ module.exports.updateCourse = async (req, res, next) => {
 
 module.exports.deleteCourse = async (req, res, next) => {
   try {
-    const courseId = req.course._id;
-    const courseDeleted = await courseModel.findByIdAndDelete(courseId);
+    const course = req.course;
+    const courseDeleted = await course.remove();
+
     return res.status(200).json({
       success: true,
       error: "null",
