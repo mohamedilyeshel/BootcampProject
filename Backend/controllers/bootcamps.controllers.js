@@ -1,6 +1,8 @@
+const path = require("path");
 const geoCoder = require("../utils/geocoder.utils");
 const bootcampModel = require("../models/bootcamp.models");
 const ErrorHandler = require("../utils/errorHandClass.utils");
+require("dotenv").config({ path: "../config/config.env" });
 
 // @desc Get all bootcamps
 // @route GET /api/v1/bootcamps/
@@ -147,6 +149,55 @@ module.exports.getBootcampsInRadius = async (req, res, next) => {
       success: true,
       error: "null",
       data: bootcamps,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// @desc Upload a bootcamp photo
+// @route PUT /api/v1/bootcamps/:bootcamp/photo
+// @access Private
+module.exports.uploadBootcampPhoto = async (req, res, next) => {
+  try {
+    if (!req.files) {
+      return next(new ErrorHandler("Please upload a file", 400));
+    }
+
+    const image = req.files.image;
+
+    if (Array.isArray(image)) {
+      return next(new ErrorHandler("Please upload one file", 400));
+    }
+
+    if (!image.mimetype.includes("image")) {
+      return next(new ErrorHandler("The uploaded file must be an image", 400));
+    }
+
+    if (image.size > process.env.MAX_IMAGE_SIZE) {
+      return next(new ErrorHandler("The file size must be 2MB or less", 400));
+    }
+
+    image.name = `${(Math.random() * Math.pow(36, 6) || 0).toString(36)}-${
+      image.name
+    }`;
+
+    await image.mv(`./Backend/public/uploads/${image.name}`);
+
+    await bootcampModel.findByIdAndUpdate(
+      req.bootcamp._id,
+      {
+        photo: image.name,
+      },
+      {
+        new: true,
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      error: "null",
+      data: image.name,
     });
   } catch (err) {
     next(err);

@@ -6,6 +6,7 @@ const color = require("@colors/colors");
 require("dotenv").config({ path: __dirname + "/config/config.env" });
 const app = express();
 const errorHandlerMiddleware = require("./middlewares/errorHandler.middleware");
+const fileUpload = require("express-fileupload");
 
 // DB connection
 connectDb();
@@ -15,11 +16,13 @@ const bootcampRoutes = require("./routes/bootcamp.routes");
 const courseRoutes = require("./routes/course.routes");
 
 // Middlewares
+app.use(express.static("./Backend/public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+app.use(fileUpload());
 
 // Routes Middlewares (Mount routers)
 app.use("/api/v1/bootcamps", bootcampRoutes);
