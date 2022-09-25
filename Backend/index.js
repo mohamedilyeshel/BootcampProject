@@ -14,6 +14,8 @@ connectDb();
 // Import Routes
 const bootcampRoutes = require("./routes/bootcamp.routes");
 const courseRoutes = require("./routes/course.routes");
+const authRoutes = require("./routes/auth.routes");
+const userRoutes = require("./routes/user.routes");
 
 // Middlewares
 app.use(express.static("./Backend/public"));
@@ -27,6 +29,8 @@ app.use(fileUpload());
 // Routes Middlewares (Mount routers)
 app.use("/api/v1/bootcamps", bootcampRoutes);
 app.use("/api/v1/courses", courseRoutes);
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users", userRoutes);
 
 // Error Handler Middleware
 app.use(errorHandlerMiddleware);
