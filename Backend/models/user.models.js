@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({
-  path: "../config/config.env",
+  path: __dirname + "../config/config.env",
 });
 
 const userSchema = new mongoose.Schema(
@@ -63,9 +63,38 @@ userSchema.methods.signToken = function () {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: "10h",
+      expiresIn: process.env.HOURS_TO_EXPIRE_TOKEN,
     }
   );
+};
+
+userSchema.methods.sendTokenCookies = function (res) {
+  const MINUTES_CONVERT = 60;
+  const SECONDS_CONVERT = 60;
+  const MS_CONVERT = 1000;
+
+  const token = this.signToken();
+
+  const options = {
+    expires: new Date(
+      Date.now() +
+        process.env.HOURS_TO_EXPIRE_COOKIE *
+          MINUTES_CONVERT *
+          SECONDS_CONVERT *
+          MS_CONVERT
+    ),
+    httpOnly: true,
+  };
+
+  if (process.env.NODE_ENV !== "development") {
+    options.secure = true;
+  }
+
+  return res.status(200).cookie("Token", token, options).json({
+    success: true,
+    error: null,
+    token,
+  });
 };
 
 module.exports = mongoose.model("User", userSchema);

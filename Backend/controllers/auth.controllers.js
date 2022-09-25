@@ -66,14 +66,15 @@ module.exports.login = async (req, res, next) => {
 
     await existUser.updateOne({ lastLogin: Date.now() });
 
-    const token = existUser.signToken();
-
-    return res.status(200).json({
-      success: true,
-      error: null,
-      token,
-    });
+    existUser.sendTokenCookies(res);
   } catch (err) {
     next(err);
   }
+};
+
+module.exports.logout = (req, res, next) => {
+  return res.clearCookie("Token").status(200).json({
+    success: true,
+    data: "Logged out",
+  });
 };

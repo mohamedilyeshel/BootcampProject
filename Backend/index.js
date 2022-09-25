@@ -7,6 +7,7 @@ require("dotenv").config({ path: __dirname + "/config/config.env" });
 const app = express();
 const errorHandlerMiddleware = require("./middlewares/errorHandler.middleware");
 const fileUpload = require("express-fileupload");
+const cookieParser = require("cookie-parser");
 
 // DB connection
 connectDb();
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 app.use(fileUpload());
+app.use(cookieParser());
 
 // Routes Middlewares (Mount routers)
 app.use("/api/v1/bootcamps", bootcampRoutes);
