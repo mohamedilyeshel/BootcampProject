@@ -57,9 +57,6 @@ userSchema.methods.signToken = function () {
   return jwt.sign(
     {
       id: this._id,
-      name: this.name,
-      email: this.email,
-      role: this.role,
     },
     process.env.JWT_SECRET,
     {

@@ -12,6 +12,10 @@ const { getBootcampCourses } = require("../controllers/course.controllers");
 const bootcampModel = require("../models/bootcamp.models");
 const errorHandlerClass = require("../utils/errorHandClass.utils");
 const optionsMiddleware = require("../middlewares/options.middlewares");
+const {
+  verifyToken,
+  rolesAuthorization,
+} = require("../middlewares/auth.middlewares");
 
 router.param("bootcamp", async (req, res, next, id) => {
   try {
@@ -39,12 +43,21 @@ router.get("/:bootcamp/courses", getBootcampCourses);
 router
   .route("/")
   .get(optionsMiddleware(bootcampModel), getBootcamps)
-  .post(createBootcamp);
+  .post(verifyToken, rolesAuthorization("publisher", "admin"), createBootcamp);
 router
   .route("/:bootcamp")
   .get(getBootcamp)
-  .put(updateBootcamp)
-  .delete(deleteBootcamp);
-router.put("/:bootcamp/upload", uploadBootcampPhoto);
+  .put(verifyToken, rolesAuthorization("publisher", "admin"), updateBootcamp)
+  .delete(
+    verifyToken,
+    rolesAuthorization("publisher", "admin"),
+    deleteBootcamp
+  );
+router.put(
+  "/:bootcamp/upload",
+  verifyToken,
+  rolesAuthorization("publisher", "admin"),
+  uploadBootcampPhoto
+);
 
 module.exports = router;
